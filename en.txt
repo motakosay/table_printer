@@ -1,5 +1,0 @@
-Position,Text Content
-Top Center,Title: "مجلة الأسرار"
-Center (Below Title),Author Name & Affiliation: "محمد أحمد- كلية الأداب -قسم لغة عربية"
-Center (Middle),Emblem: Circular logo of the University
-Bottom Center,Publication Info: "2023"
