@@ -1,44 +1,31 @@
 # table_code.py
 import sys
-import arabic_reshaper
-from bidi.algorithm import get_display
 
-# Get language from command-line argument (default = English)
-if len(sys.argv) > 2:
-    language = sys.argv[2].lower()
-else:
-    language = "en"
-
-# Read text from .txt file (first argument)
-if len(sys.argv) > 1:
-    filename = sys.argv[1]
-    with open(filename, "r", encoding="utf-8") as f:
-        text = f.read()
-else:
-    print("Usage: python table_code.py <input.txt> [en|ar]")
+# make sure pass file name
+if len(sys.argv) < 2:
+    print("Usage: python table_code.py <input.txt>")
     sys.exit(1)
 
-# Parse the text
-lines = text.strip().split('\n')
+filename = sys.argv[1]
+
+# read .txt file
+with open(filename, "r", encoding="utf-8") as f:
+    text = f.read()
+
+lines = [line for line in text.strip().split('\n') if line.strip()]  # تجاهل الأسطر الفارغة
 rows = [line.split(',') for line in lines]
 
-# Calculate column widths
-col_widths = [max(len(row[i]) for row in rows) for i in range(len(rows[0]))]
+num_cols = len(rows[0])
 
-# Function to format a row
+# ضمان أن كل صف له نفس عدد الأعمدة
+rows = [row if len(row) == num_cols else row + [""] * (num_cols - len(row)) for row in rows]
+
+col_widths = [max(len(row[i]) for row in rows) for i in range(num_cols)]
+
 def format_row(row):
-    formatted_cells = []
-    for i, cell in enumerate(row):
-        if language == "ar":
-            reshaped = arabic_reshaper.reshape(cell)
-            bidi_text = get_display(reshaped)
-            formatted_cells.append(bidi_text.rjust(col_widths[i]))
-        else:
-            formatted_cells.append(cell.ljust(col_widths[i]))
-    return " | ".join(formatted_cells)
+    return " | ".join(row[i].ljust(col_widths[i]) for i in range(num_cols))
 
-# Print the table
-print(format_row(rows[0]))  # Header
-print("-" * (sum(col_widths) + 3 * (len(col_widths) - 1)))  # Separator
+print(format_row(rows[0]))
+print("-" * (sum(col_widths) + 3 * (num_cols - 1)))  # فاصل
 for row in rows[1:]:
     print(format_row(row))
