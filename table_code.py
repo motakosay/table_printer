@@ -12,7 +12,7 @@ filename = sys.argv[1]
 with open(filename, "r", encoding="utf-8") as f:
     text = f.read()
 
-lines = [line for line in text.strip().split('\n') if line.strip()]  # تجاهل الأسطر الفارغة
+lines = [line for line in text.strip().split('\n') if line.strip()]
 rows = [line.split(',') for line in lines]
 
 num_cols = len(rows[0])
@@ -25,7 +25,8 @@ def format_row(row):
     return " | ".join(row[i].ljust(col_widths[i]) for i in range(num_cols))
 
 print(format_row(rows[0]))
-print("-" * (sum(col_widths) + 3 * (num_cols - 1)))  # فاصل
+print("-" * (sum(col_widths) + 3 * (num_cols - 1)))
 for row in rows[1:]:
     print(format_row(row))
+
 
