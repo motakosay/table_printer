@@ -17,7 +17,6 @@ rows = [line.split(',') for line in lines]
 
 num_cols = len(rows[0])
 
-# ضمان أن كل صف له نفس عدد الأعمدة
 rows = [row if len(row) == num_cols else row + [""] * (num_cols - len(row)) for row in rows]
 
 col_widths = [max(len(row[i]) for row in rows) for i in range(num_cols)]
@@ -29,3 +28,4 @@ print(format_row(rows[0]))
 print("-" * (sum(col_widths) + 3 * (num_cols - 1)))  # فاصل
 for row in rows[1:]:
     print(format_row(row))
+
